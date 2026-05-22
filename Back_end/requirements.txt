@@ -1,0 +1,30 @@
+# Development requirements - minimal setup without PostgreSQL
+# Use this if you want to develop with SQLite (default)
+
+# Core Flask dependencies
+Flask>=3.0.0
+Flask-CORS>=4.0.0
+Flask-JWT-Extended>=4.6.0
+Flask-SQLAlchemy>=3.1.1
+Flask-Migrate>=4.0.5
+python-dotenv>=1.0.0
+SQLAlchemy>=2.0.36
+
+# Authentication & Security
+PyJWT>=2.8.0
+bcrypt>=4.1.2
+python-multipart>=0.0.6
+
+# Image Processing
+Pillow>=10.1.0
+
+# HTTP & API
+requests>=2.31.0
+
+# Location Services
+geopy>=2.4.1
+python-dateutil>=2.8.2
+
+# Note: PostgreSQL dependencies are excluded for easier development setup
+# The app will use SQLite by default (configured in config.py)
+
