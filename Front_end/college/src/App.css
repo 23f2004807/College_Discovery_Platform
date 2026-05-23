@@ -1,1 +1,499 @@
-/* Emptied to prevent conflicts with Tailwind & Bootstrap */
+/* Navbar — fix Tailwind .collapse breaking Bootstrap navbar-collapse */
+.navbar-campus {
+  z-index: 1030;
+}
+
+.navbar-campus .container-fluid {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Tailwind sets visibility:collapse on .collapse — undo for Bootstrap navbar */
+.navbar-campus .navbar-collapse.collapse {
+  visibility: visible !important;
+}
+
+@media (min-width: 992px) {
+  .navbar-campus.navbar-expand-lg .navbar-collapse.collapse {
+    display: flex !important;
+    flex-basis: auto;
+    flex-grow: 1;
+    align-items: center;
+    height: auto !important;
+  }
+
+  .navbar-campus .navbar-nav {
+    flex-wrap: nowrap;
+  }
+
+  .navbar-campus .nav-link {
+    white-space: nowrap;
+  }
+
+  .navbar-campus .navbar-widgets {
+    flex-shrink: 0;
+  }
+
+  .navbar-campus .navbar-widgets .btn,
+  .navbar-campus .navbar-widgets button {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .navbar-campus .navbar-collapse.collapse:not(.show) {
+    display: none !important;
+  }
+
+  .navbar-campus .navbar-collapse.collapse.show {
+    display: block !important;
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .navbar-campus .navbar-widgets.flex-column .btn,
+  .navbar-campus .navbar-widgets.flex-column button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Layout fixes — predictor & college detail */
+.z-50 {
+  z-index: 50;
+}
+
+.predictor-page-row {
+  position: relative;
+}
+
+.predictor-form-col {
+  position: relative;
+  z-index: 1;
+}
+
+.predictor-results-col {
+  position: relative;
+  z-index: 0;
+}
+
+@media (min-width: 992px) {
+  .predictor-form-card {
+    position: sticky;
+    top: 5.5rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .predictor-form-card {
+    position: static !important;
+    margin-bottom: 0;
+  }
+}
+
+/* Clickable college cards */
+.college-card-link {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.college-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1) !important;
+}
+
+.college-card-actions {
+  position: relative;
+  z-index: 3;
+}
+
+/* College detail — review panel */
+.college-detail-review {
+  position: static;
+}
+
+@media (min-width: 992px) {
+  .college-detail-review {
+    position: sticky;
+    top: 5.5rem;
+    align-self: flex-start;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+  }
+}
+
+.badge-stream {
+  background-color: #e0f2fe !important;
+  color: #0369a1 !important;
+  font-weight: 700;
+}
+
+.badge-type {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  font-weight: 700;
+}
+
+.badge-course {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  border: 1px solid #e2e8f0;
+  font-weight: 600;
+}
+
+/* Compare page */
+.compare-slot {
+  border-radius: 1.25rem;
+  min-height: 220px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.compare-slot-filled {
+  background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 40%);
+  border: 2px solid #bae6fd;
+}
+
+.compare-slot-empty {
+  border: 2px dashed #cbd5e1;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.compare-slot-empty:hover {
+  border-color: #38bdf8;
+  background: #f8fafc;
+}
+
+.compare-slot-empty:hover .compare-slot-add-icon {
+  background: #0ea5e9;
+  color: white;
+}
+
+.compare-slot-add-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.compare-slot-remove {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #fee2e2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.15s ease;
+}
+
+.compare-slot-remove:hover {
+  background: #fecaca;
+}
+
+.compare-add-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.compare-add-card {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  background: #fafafa;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.compare-add-card:hover {
+  border-color: #7dd3fc;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.1);
+}
+
+.compare-table .compare-feature-col {
+  width: 140px;
+  background: #f8fafc;
+}
+
+.compare-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 1050;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+  animation: compareToastIn 0.25s ease;
+}
+
+.compare-toast-success {
+  background: #059669;
+  color: white;
+}
+
+.compare-toast-warning {
+  background: #d97706;
+  color: white;
+}
+
+.compare-toast-info {
+  background: #334155;
+  color: white;
+}
+
+@keyframes compareToastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Compare now — forced styles (Tailwind/Bootstrap reset safe) */
+.compare-now-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.625rem !important;
+  margin: 0 auto !important;
+  padding: 1rem 2.25rem !important;
+  min-width: 220px !important;
+  font-family: inherit !important;
+  font-size: 1.125rem !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.02em !important;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 50%, #38bdf8 100%) !important;
+  border: none !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.45) !important;
+  cursor: pointer !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.compare-now-btn:hover {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 28px rgba(14, 165, 233, 0.55) !important;
+}
+
+.compare-now-btn:active {
+  transform: translateY(0) !important;
+}
+
+.compare-now-btn svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  flex-shrink: 0 !important;
+}
+
+.compare-now-btn-label {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.compare-now-hint {
+  margin: 0.75rem 0 0 !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: #0284c7 !important;
+}
+
+.compare-icon-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding: 0.35rem 0.65rem !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  background: #0284c7 !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  cursor: pointer !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.compare-icon-btn svg,
+.compare-icon-btn span {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.compare-icon-btn:hover {
+  background: #0369a1 !important;
+  color: #ffffff !important;
+}
+
+.compare-icon-btn-added {
+  background: #fbbf24 !important;
+  color: #1e293b !important;
+}
+
+.compare-icon-btn-added svg,
+.compare-icon-btn-added span {
+  color: #1e293b !important;
+  stroke: #1e293b !important;
+}
+
+.compare-now-pulse {
+  animation: comparePulse 2s ease-in-out infinite;
+}
+
+@keyframes comparePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(14, 165, 233, 0); }
+}
+
+/* Compare overlay modal */
+.compare-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: overlayFadeIn 0.2s ease;
+}
+
+.compare-overlay-panel {
+  background: #fff;
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.25);
+  animation: overlaySlideUp 0.3s ease;
+}
+
+.compare-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.compare-overlay-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.compare-overlay-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.compare-overlay-colleges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(180deg, #f0f9ff 0%, #fff 100%);
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.compare-overlay-college-card {
+  position: relative;
+  text-align: center;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #bae6fd;
+  border-radius: 1rem;
+}
+
+.compare-overlay-college-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: #fee2e2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.compare-overlay-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0;
+}
+
+.compare-overlay-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  flex-shrink: 0;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes overlaySlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

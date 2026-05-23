@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../api';
+import { savedService } from '../services/savedService';
 import { useAuth } from '../context/AuthContext';
 import { BookmarkCheck, MapPin, IndianRupee, Star, Landmark, Trash2, ArrowLeft } from 'lucide-react';
 
@@ -22,7 +22,7 @@ export default function SavedColleges() {
   const fetchSavedColleges = async () => {
     setLoading(true);
     try {
-      const data = await api.get('/saved');
+      const data = await savedService.list();
       setSavedItems(data);
     } catch (err) {
       console.error(err);
@@ -41,7 +41,7 @@ export default function SavedColleges() {
   // Remove saved college
   const handleRemoveSaved = async (collegeId) => {
     try {
-      await api.post('/saved/toggle', { college_id: collegeId });
+      await savedService.toggle(collegeId);
       // Update UI list directly without full reload
       setSavedItems(savedItems.filter(item => item.college_id !== collegeId));
     } catch (err) {

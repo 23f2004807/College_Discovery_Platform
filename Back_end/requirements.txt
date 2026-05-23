@@ -25,6 +25,11 @@ requests>=2.31.0
 geopy>=2.4.1
 python-dateutil>=2.8.2
 
-# Note: PostgreSQL dependencies are excluded for easier development setup
-# The app will use SQLite by default (configured in config.py)
+# PostgreSQL
+psycopg2-binary>=2.9.9
+
+# Production server
+gunicorn>=21.2.0
+
+# Set USE_SQLITE=true in .env to use SQLite instead of PostgreSQL
 

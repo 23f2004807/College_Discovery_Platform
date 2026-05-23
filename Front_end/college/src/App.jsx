@@ -9,6 +9,7 @@ import Predictor from './pages/Predictor';
 import Auth from './pages/Auth';
 import AdminDashboard from './pages/AdminDashboard';
 import SavedColleges from './pages/SavedColleges';
+import ProtectedRoute from './components/ProtectedRoute';
 import { GraduationCap } from 'lucide-react';
 import './App.css';
 
@@ -24,13 +25,14 @@ function App() {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/colleges" element={<CollegeList />} />
-              <Route path="/colleges/:id" element={<CollegeDetail />} />
-              <Route path="/compare" element={<Compare />} />
-              <Route path="/predictor" element={<Predictor />} />
+              <Route path="/colleges" element={<ProtectedRoute><CollegeList /></ProtectedRoute>} />
+              <Route path="/colleges/:id" element={<ProtectedRoute><CollegeDetail /></ProtectedRoute>} />
+              <Route path="/compare" element={<ProtectedRoute><Compare /></ProtectedRoute>} />
+              <Route path="/predictor" element={<ProtectedRoute><Predictor /></ProtectedRoute>} />
               <Route path="/auth" element={<Auth />} />
-              <Route path="/saved" element={<SavedColleges />} />
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/saved" element={<ProtectedRoute><SavedColleges /></ProtectedRoute>} />
+              <Route path="/admin/login" element={<Navigate to="/auth" replace />} />
+              <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>

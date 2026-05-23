@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../api';
+import { collegeService } from '../services/collegeService';
 import { useAuth } from '../context/AuthContext';
-import { Plus, Edit2, Trash2, ShieldAlert, X, Save, Upload, Landmark, Sparkles, MapPin } from 'lucide-react';
+import { Plus, Edit2, Trash2, ShieldAlert, Save, Landmark, Sparkles, MapPin } from 'lucide-react';
+import LogoutButton from '../components/LogoutButton';
+import { FIELD_OPTIONS, EXPECTING_TYPES } from '../models/constants';
 
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -28,6 +30,8 @@ export default function AdminDashboard() {
   const [courses, setCourses] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [stream, setStream] = useState('Engineering');
+  const [institutionType, setInstitutionType] = useState('College');
   const [cutoffs, setCutoffs] = useState([]); // List of { exam, branch, max_rank }
 
   // Temp cutoff entry states
@@ -35,10 +39,9 @@ export default function AdminDashboard() {
   const [tempBranch, setTempBranch] = useState('');
   const [tempMaxRank, setTempMaxRank] = useState('');
 
-  // Protect route
   useEffect(() => {
     if (!authLoading && (!user || user.role !== 'admin')) {
-      navigate('/auth');
+      navigate('/auth', { state: { from: '/admin' } });
     }
   }, [user, authLoading, navigate]);
 
@@ -46,7 +49,7 @@ export default function AdminDashboard() {
   const fetchColleges = async () => {
     setLoading(true);
     try {
-      const data = await api.get('/colleges');
+      const data = await collegeService.list('');
       setColleges(data);
     } catch (err) {
       console.error(err);
@@ -76,6 +79,8 @@ export default function AdminDashboard() {
     setCourses('');
     setLogoUrl('');
     setDescription('');
+    setStream('Engineering');
+    setInstitutionType('College');
     setCutoffs([]);
     setError(null);
     setShowModal(true);
@@ -85,7 +90,7 @@ export default function AdminDashboard() {
   const handleOpenEdit = async (collegeId) => {
     setLoading(true);
     try {
-      const data = await api.get(`/colleges/${collegeId}`);
+      const data = await collegeService.getById(collegeId);
       setIsEditing(true);
       setEditId(collegeId);
       setName(data.name);
@@ -98,6 +103,8 @@ export default function AdminDashboard() {
       setCourses(data.courses.join(', '));
       setLogoUrl(data.logo_url || '');
       setDescription(data.description || '');
+      setStream(data.stream || 'Engineering');
+      setInstitutionType(data.institution_type || 'College');
       setCutoffs(data.cutoffs || []);
       setError(null);
       setShowModal(true);
@@ -148,14 +155,16 @@ export default function AdminDashboard() {
       package_highest: parseFloat(packageHighest || 0.0),
       logo_url: logoUrl,
       description,
+      stream,
+      institution_type: institutionType,
       cutoffs
     };
 
     try {
       if (isEditing) {
-        await api.put(`/colleges/${editId}`, payload);
+        await collegeService.update(editId, payload);
       } else {
-        await api.post('/colleges', payload);
+        await collegeService.create(payload);
       }
       setShowModal(false);
       fetchColleges();
@@ -171,7 +180,7 @@ export default function AdminDashboard() {
       return;
     }
     try {
-      await api.delete(`/colleges/${collegeId}`);
+      await collegeService.delete(collegeId);
       fetchColleges();
     } catch (err) {
       console.error(err);
@@ -200,12 +209,15 @@ export default function AdminDashboard() {
           <p className="text-slate-500 mt-1">Add, update, or remove institutions, courses, and cutoffs from the database.</p>
         </div>
 
-        <button
-          onClick={handleOpenCreate}
-          className="btn btn-primary rounded-xl px-4 py-2.5 text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 border-0 shadow d-flex align-items-center gap-1.5 glow-btn w-fit"
-        >
-          <Plus className="h-4 w-4" /> Add New College
-        </button>
+        <div className="d-flex flex-wrap gap-2 align-items-center">
+          <button
+            onClick={handleOpenCreate}
+            className="btn btn-primary rounded-xl px-4 py-2.5 text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 border-0 shadow d-flex align-items-center gap-1.5 glow-btn"
+          >
+            <Plus className="h-4 w-4" /> Add New College
+          </button>
+          <LogoutButton />
+        </div>
       </div>
 
       {/* College list table */}
@@ -304,6 +316,20 @@ export default function AdminDashboard() {
                         onChange={(e) => setName(e.target.value)}
                         required
                       />
+                    </div>
+
+                    {/* Stream & type */}
+                    <div className="col-md-3">
+                      <label className="form-label text-xs uppercase font-extrabold tracking-wider text-slate-500">Stream</label>
+                      <select className="form-select rounded-xl text-sm" value={stream} onChange={(e) => setStream(e.target.value)} required>
+                        {FIELD_OPTIONS.map((f) => <option key={f} value={f}>{f}</option>)}
+                      </select>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label text-xs uppercase font-extrabold tracking-wider text-slate-500">Institution Type</label>
+                      <select className="form-select rounded-xl text-sm" value={institutionType} onChange={(e) => setInstitutionType(e.target.value)} required>
+                        {EXPECTING_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                      </select>
                     </div>
 
                     {/* Location */}

@@ -1,5 +1,8 @@
+/**
+ * Presenter layer — global auth state orchestration.
+ */
 import { createContext, useContext, useState, useEffect } from 'react';
-import { api } from '../api';
+import { authService } from '../services/authService';
 
 const AuthContext = createContext();
 
@@ -14,12 +17,10 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
       return;
     }
-
     try {
-      const data = await api.get('/auth/me');
+      const data = await authService.me();
       setUser(data.user);
-    } catch (error) {
-      console.error('Failed to load user profile, clearing token:', error);
+    } catch {
       localStorage.removeItem('token');
       setUser(null);
     } finally {
@@ -27,33 +28,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    checkUser();
-  }, []);
+  useEffect(() => { checkUser(); }, []);
 
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const data = await api.post('/auth/login', { email, password });
+      const data = await authService.login(email, password);
       localStorage.setItem('token', data.token);
       setUser(data.user);
       return data.user;
-    } catch (error) {
-      throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  const register = async (email, password, role = 'user') => {
+  const register = async (profile) => {
     setLoading(true);
     try {
-      const data = await api.post('/auth/register', { email, password, role });
-      localStorage.setItem('token', data.token);
-      setUser(data.user);
-      return data.user;
-    } catch (error) {
-      throw error;
+      const data = await authService.register(profile);
+      return data;
     } finally {
       setLoading(false);
     }
@@ -64,22 +57,19 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const value = {
-    user,
-    loading,
-    login,
-    register,
-    logout,
-    checkUser,
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, loading, login, register, logout, checkUser, updateUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
